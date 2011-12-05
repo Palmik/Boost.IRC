@@ -1,0 +1,12 @@
+lib boost_unit_test_framework ;
+
+alias used-libs : /connection boost_unit_test_framework ;
+
+all-tests = [ glob *.cpp ] ;
+for local test in $(all-tests)
+{
+    exe connection/tests/$(test)
+        : $(test) used-libs
+        ;
+}
+

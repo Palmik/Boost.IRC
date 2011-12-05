@@ -1,0 +1,9 @@
+project boost-irc
+    : requirements <include>.
+    : usage-requirements <include>.
+    ;
+
+build-project connection/build ;
+build-project connection/tests ;
+
+use-project /connection : connection/build ;
