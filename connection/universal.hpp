@@ -101,12 +101,12 @@ inline void connection::send(buffer_type const& buffer)
 }
 
 // PUBLIC SIGNALS
-inline boost::signals2::signal<void ()>& connection::connected()
+inline boost::signals2::signal<void ()>& connection::sig_connected()
 {
     return sig_connected_m;
 }
 
-inline boost::signals2::signal<void ()>& connection::disconnected()
+inline boost::signals2::signal<void ()>& connection::sig_disconnected()
 {
     return sig_disconnected_m;
 }
