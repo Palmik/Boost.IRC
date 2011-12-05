@@ -58,7 +58,11 @@ private:
     void on_error();
 
 // PRIVATE VARIABLES
-private:    
+private:
+    // SIGNAL OBJECTS.
+    boost::signals2::signal<void ()> sig_connected_m;
+    boost::signals2::signal<void ()> sig_disconnected_m;
+    
     // NETWORK OBJECTS.
     boost::asio::io_service      io_service_m;
     socket_type socket_m;
