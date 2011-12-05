@@ -1,11 +1,22 @@
-#include <connection/universal.hpp>
+#include <connection/socket/tcp.hpp>
+#include <iostream>
+using namespace std;
+using namespace connection;
+
+void handle_connected()
+{
+    cout << "Connected, yay!" << endl;
+}
+
+void handle_disconnected()
+{
+    cout << "Disconnected, noo!" << endl;
+}
 
 int main()
 {
-    connection::connection c;
-    c.connect("nist1-ny.ustiming.org", "daytime");
-
-    while(true)
-    {
-    }
+    tcp::socket c;
+    c.sig_connected().connect(handle_connected);
+    c.sig_disconnected().connect(handle_disconnected);
+    c.connect("ntp.cesnet.cz", "daytime");
 }
