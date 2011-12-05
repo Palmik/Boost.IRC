@@ -36,8 +36,8 @@ public:
     void send(buffer_type const& buffer);
 
     // SIGNALS
-    boost::signals2::signal<void ()>& connected();
-    boost::signals2::signal<void ()>& disconnected();
+    boost::signals2::signal<void ()>& sig_connected();
+    boost::signals2::signal<void ()>& sig_disconnected();
 
 // PRIVATE TYPES
 private:
@@ -52,17 +52,13 @@ private:
 
     void resolve_handler(error_type const& error, iterator_type iterator);
     void connect_handler(error_type const& error, iterator_type iterator);
-    void on_disconnected();
+
     void on_send();
     void on_received();    
     void on_error();
 
 // PRIVATE VARIABLES
-private:
-    // SIGNALS.
-    boost::signals2::signal<void ()> sig_connected_m;
-    boost::signals2::signal<void ()> sig_disconnected_m;
-    
+private:    
     // NETWORK OBJECTS.
     boost::asio::io_service      io_service_m;
     socket_type socket_m;
@@ -91,12 +87,12 @@ inline void connection::connect(char const* host, char const* service)
     resolver_type::query query(host, service);
     
     resolver.async_resolve(query, boost::bind(&connection_type::resolve_handler, this, _1, _2));
-    std::cerr << "Connected" << std::endl;
 }
 
 inline void connection::disconnect()
 {
     socket().close();
+    sig_disconnected()();
 }
 
 inline void connection::send(buffer_type const& buffer)
@@ -125,7 +121,7 @@ inline void connection::resolve_handler(error_type const& error, iterator_type i
     }
     else
     {
-        // TODO: Handle error (emit error signal).
+        // TODO: Handle unsuccessful resolution (try again? emit error?).
     }
 }
 
@@ -134,12 +130,12 @@ inline void connection::connect_handler(error_type const& error, iterator_type i
     if (!error)
     {
         // Connected successfully
-        connected()();
+        sig_connected()();
         // TODO: 
     }
     else
     {
-        // TODO: Handle unsuccessful connection (try connecting again?)
+        // TODO: Handle unsuccessful connection (try again? emit error?)
     }
 }
 
