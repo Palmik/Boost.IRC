@@ -1,11 +1,12 @@
 lib boost_unit_test_framework ;
+lib boost_thread ;
 
-alias used-libs : /connection boost_unit_test_framework ;
+alias used-libs : /irc boost_unit_test_framework boost_thread ;
 
 all-tests = [ glob *.cpp ] ;
 for local test in $(all-tests)
 {
-    exe connection/tests/$(test)
+    exe irc/tests/$(test)
         : $(test) used-libs
         ;
 }

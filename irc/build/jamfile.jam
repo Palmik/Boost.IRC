@@ -1,10 +1,9 @@
 lib boost_system ;
 lib boost_signals ;
 
-alias tcp
+alias irc
     :
     : <include>boost_system
     :
     : <include>boost_system
     ;
- 
