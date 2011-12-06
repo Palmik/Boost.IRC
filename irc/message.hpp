@@ -4,6 +4,21 @@
 namespace irc { namespace message
 {
 
+inline std::string make_authenticate_command(std::string const& nickname,
+                                             std::string const& realname = std::string(),
+                                             std::string const& password = std::string())
+{
+
+    std::string msg("NICK " + nickname + "\r\n"
+                    "USER " + nickname + " 0 * :" + realname + "\r\n");
+
+    if (!password.empty()) {
+        msg = "PASS" + password + "\r\n" + msg;
+    }
+
+    return msg;
+}
+
 inline std::string make_join_channel_command(std::string const& channel)
 {
     return "JOIN " + channel + "\r\n";

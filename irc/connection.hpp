@@ -3,6 +3,7 @@
 
 #include <boost/asio.hpp>
 #include <string>
+#include <irc/message.hpp> // I probably should not include whole header for just one function
 
 namespace irc
 {
@@ -70,15 +71,8 @@ inline void connection::do_connect()
 inline void connection::do_authenticate(std::string const& nickname,
                                  std::string const& realname,
                                  std::string const& password)
-{
-    std::string msg("NICK " + nickname + "\r\n"
-                    "USER " + nickname + " 0 * :" + realname + "\r\n");
-    
-    if (!password.empty()) {
-        msg = "PASS" + password + "\r\n" + msg;
-    }
-    
-    do_send(msg);
+{    
+    do_send(message::make_authenticate_command(nickname, realname, password));
 }
 
 inline void connection::do_send(std::string const& msg)
