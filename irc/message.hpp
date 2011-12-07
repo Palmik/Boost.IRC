@@ -1,8 +1,26 @@
 #ifndef IRC_MESSSAGE_HPP
 #define IRC_MESSSAGE_HPP
 
+#include <boost/regex.hpp>
+
 namespace irc { namespace message
 {
+
+namespace utility
+{
+    std::string first_match(std::string const& expr_str, std::string const& text)
+    {
+        boost::regex expr(expr_str);
+        std::string result;
+        boost::match_results<std::string::const_iterator> what;
+        if (boost::regex_match(text, what, expr))
+        {
+            result = what[1];
+        }
+
+        return result;
+    }
+}
 
 inline std::string make_authenticate_command(std::string const& nickname,
                                              std::string const& realname = std::string(),
@@ -58,7 +76,22 @@ inline std::string make_notice(std::string const& receiver, std::string const& m
 
 inline std::string make_action(std::string const& receiver, std::string const& msg)
 {
-    return "PRIVMSG " + receiver + " :" + char(1) + "ACTION " + msg + "\r\n";
+    return "PRIVMSG " + receiver + " :" + char(1) + "ACTION " + msg + char(1) + "\r\n";
+}
+
+inline std::string get_sender_nickname(std::string const& message)
+{
+    return utility::first_match(":([^!]*)!.*", message);
+}
+
+inline std::string get_sender_channel(std::string const& message)
+{
+    return utility::first_match("[^ ]*(?: NOTICE | PRIVMSG )(#[^ ]*) :.*", message);
+}
+
+inline std::string get_sender_mask(std::string const& message)
+{
+    return utility::first_match("[^~]*~([^ ]*) .*", message);
 }
     
 }}

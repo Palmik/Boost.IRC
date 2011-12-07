@@ -1,9 +1,10 @@
 lib boost_system ;
 lib boost_thread ;
+lib boost_regex ;
 
 alias irc
     :
-    : <include>boost_system <include>boost_thread
+    : <include>boost_system <include>boost_thread <include>boost_regex
     :
-    : <include>boost_system <include>boost_thread
+    : <include>boost_system <include>boost_thread <include>boost_regex
     ;
