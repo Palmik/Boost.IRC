@@ -34,6 +34,18 @@ inline std::string make_quit_command(std::string const& msg)
     return "QUIT :" + msg + "\r\n";
 }
 
+inline std::string make_kick_command(std::string const& channel,
+                                     std::string const& nickname,
+                                     std::string const& reason = std::string())
+{
+    return "KICK " + channel + ' ' + nickname + " :" + reason + "\r\n";
+}
+
+inline std::string make_pong_message(std::string const& msg)
+{
+    return "PING :" + msg + "\r\n";
+}
+
 inline std::string make_message(std::string const& receiver, std::string const& msg)
 {
     return "PRIVMSG " + receiver + " :" + msg + "\r\n";

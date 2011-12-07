@@ -10,6 +10,7 @@ project boost-irc
 
 build-project irc/build ;
 build-project irc/tests ;
+build-project irc/examples ;
 
 use-project /irc : irc/build ;
 

@@ -1,0 +1,10 @@
+alias used-libs : /irc ;
+
+all-tests = [ glob *.cpp ] ;
+for local test in $(all-tests)
+{
+    exe irc/tests/$(test)
+        : $(test) used-libs
+        ;
+}
+

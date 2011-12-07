@@ -1,9 +1,9 @@
 lib boost_system ;
-lib boost_signals ;
+lib boost_thread ;
 
 alias irc
     :
-    : <include>boost_system
+    : <include>boost_system <include>boost_thread
     :
-    : <include>boost_system
+    : <include>boost_system <include>boost_thread
     ;

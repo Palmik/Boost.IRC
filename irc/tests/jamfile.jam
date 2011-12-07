@@ -6,7 +6,7 @@ alias used-libs : /irc boost_unit_test_framework boost_thread ;
 all-tests = [ glob *.cpp ] ;
 for local test in $(all-tests)
 {
-    exe irc/tests/$(test)
+    unit-test irc/tests/$(test)
         : $(test) used-libs
         ;
 }
