@@ -4,11 +4,9 @@
 #include <irc/bots/slap_back.hpp>
 #include <irc/bots/utility.hpp>
 
-#include <boost/algorithm/string/predicate.hpp>
 #include <iostream>
 
 using namespace irc;
-using namespace std;
 
 static const std::string servername = "irc.rizon.net";
 static const std::string port = "6667";
@@ -24,7 +22,7 @@ void on_connected(connection& irc)
 
 void on_received(connection& irc, std::string msg)
 {
-    cout << msg << endl;
+    std::cout << msg << std::endl;
     if (boost::starts_with(msg, "PING")) {
         irc.send(message::make_pong_message("leave me alone!"));
     }
@@ -32,7 +30,7 @@ void on_received(connection& irc, std::string msg)
 
 void on_error(boost::system::error_code ec)
 {
-    cerr << "ERROR: " << ec << endl;
+    std::cerr << "ERROR: " << ec << std::endl;
 }
 
 int main()
