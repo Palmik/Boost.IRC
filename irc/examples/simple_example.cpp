@@ -7,9 +7,16 @@
 using namespace irc;
 using namespace std;
 
+std::string servername = "irc.rizon.net";
+std::string port = "6667";
+
+std::string nickname = "TestBoostBot";
+std::string channel = "#boost-bot";
+
 void connected_slot(connection& irc)
 {
-    irc.send(message::make_authenticate_command("TestTestBoost", "jmeno"));
+    irc.send(message::make_authenticate_command(nickname, nickname));
+    irc.send(message::make_join_channel_command(channel));
 }
 
 void received_slot(connection& irc, std::string msg)
@@ -22,19 +29,16 @@ void received_slot(connection& irc, std::string msg)
 
 int main()
 {
-    connection irc("irc.rizon.net", "6667");
+    connection irc(servername, port);
+    
     irc.sig_connected().connect(boost::bind(connected_slot, boost::ref(irc)));
     irc.sig_received().connect(boost::bind(received_slot, boost::ref(irc), _1));    
     irc.connect();
 
-    irc.send(message::make_join_channel_command("#boost-bot"));
-    irc.send(message::make_action("Palmik", "lolol"));
-
     std::string msg;
     while (getline(std::cin, msg))
     {
-        msg = message::make_message("#boost-bot", msg);
-        msg = message::make_notice("#boost-bot", msg);
+        msg = message::make_message(channel, msg);
         irc.send(msg);
     }
 }
