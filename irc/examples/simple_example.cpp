@@ -4,6 +4,7 @@
 
 #include <irc/bots/pong.hpp>
 #include <irc/bots/slap_back.hpp>
+#include <irc/bots/brainfuck.hpp>
 #include <irc/bots/utility.hpp>
 
 #include <iostream>
@@ -53,6 +54,10 @@ int main()
     slap_back_bot.protect(nickname);
     bot::attach_raw(slap_back_bot, irc);
 
+    // Setup brainfuck bot
+    bot::brainfuck brainfuck_bot(">>");
+    bot::attach_raw(brainfuck_bot, irc);
+    
     // Connect
     irc.connect();
 

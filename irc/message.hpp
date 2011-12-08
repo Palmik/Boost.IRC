@@ -131,6 +131,25 @@ inline bool is_action(std::string const& message)
     boost::regex expr(":.*!~.*@.* PRIVMSG .* :\001ACTION .*\001");
     return utility::does_match(expr, message);
 }
+
+inline bool is_private(std::string const& message)
+{
+    boost::regex expr(":.*!~.*@.* PRIVMSG [^#]* :.*");
+    return utility::does_match(expr, message);
+}
+
+inline std::string get_response_receiver(std::string const& msg)
+{
+    bool priv = is_private(msg);
+    if (priv)
+    {
+        return get_sender_nickname(msg);
+    }
+    else
+    {
+        return get_message_addressee(msg);
+    }
+}
     
 }}
 
