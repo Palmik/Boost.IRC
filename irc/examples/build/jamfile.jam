@@ -1,6 +1,6 @@
-alias used-libs : /irc ;
+alias used-libs : /irc /irc/bots ;
 
-all-tests = [ glob *.cpp ] ;
+all-tests = [ glob ../*.cpp ] ;
 for local test in $(all-tests)
 {
     exe irc/tests/$(test)

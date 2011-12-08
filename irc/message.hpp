@@ -8,9 +8,8 @@ namespace irc { namespace message
 
 namespace utility
 {
-    std::string first_match(std::string const& expr_str, std::string const& text)
+    std::string first_match(boost::regex const& expr, std::string const& text)
     {
-        boost::regex expr(expr_str);
         std::string result;
         boost::match_results<std::string::const_iterator> what;
         if (boost::regex_match(text, what, expr))
@@ -19,6 +18,12 @@ namespace utility
         }
 
         return result;
+    }
+
+    bool does_match(boost::regex const& expr, std::string const& text)
+    {
+        boost::match_results<std::string::const_iterator> what;
+        return boost::regex_match(text, what, expr);
     }
 }
 
@@ -79,19 +84,52 @@ inline std::string make_action(std::string const& receiver, std::string const& m
     return "PRIVMSG " + receiver + " :" + char(1) + "ACTION " + msg + char(1) + "\r\n";
 }
 
-inline std::string get_sender_nickname(std::string const& message)
+inline std::string get_message_addressee(std::string const& message)
 {
-    return utility::first_match(":([^!]*)!.*", message);
+    boost::regex expr("[^ ]*(?: NOTICE | PRIVMSG )(#[^ ]*) :.*");
+    return utility::first_match(expr, message);
 }
 
-inline std::string get_sender_channel(std::string const& message)
+inline std::string get_sender_nickname(std::string const& message)
 {
-    return utility::first_match("[^ ]*(?: NOTICE | PRIVMSG )(#[^ ]*) :.*", message);
+    boost::regex expr(":([^!]*)!.*");
+    return utility::first_match(expr, message);
 }
 
 inline std::string get_sender_mask(std::string const& message)
 {
-    return utility::first_match("[^~]*~([^ ]*) .*", message);
+    boost::regex expr("[^~]*~.*@([^ ]*).*");
+    return utility::first_match(expr, message);
+}
+
+inline std::string get_sender_realname(std::string const& message)
+{
+    boost::regex expr("[^~]*~([^@]*)@.*");
+    return utility::first_match(expr, message);
+}
+
+inline std::string get_message_content(std::string const& message)
+{
+    boost::regex expr(":.*!~.*@.* (?:PRIVMSG|NOTICE) .* :(?:\001ACTION )?(.*)");
+    return utility::first_match(expr, message);
+}
+
+inline bool is_message(std::string const& message)
+{
+    boost::regex expr(":.*!~.*@.* PRIVMSG .* :.*");
+    return utility::does_match(expr, message);
+}
+
+inline bool is_notice(std::string const& message)
+{
+    boost::regex expr(":.*!~.*@.* NOTICE .* :.*");
+    return utility::does_match(expr, message);
+}
+
+inline bool is_action(std::string const& message)
+{
+    boost::regex expr(":.*!~.*@.* PRIVMSG .* :\001ACTION .*\001");
+    return utility::does_match(expr, message);
 }
     
 }}
