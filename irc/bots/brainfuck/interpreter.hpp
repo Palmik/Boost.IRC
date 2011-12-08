@@ -55,11 +55,15 @@ public:
                 case ']': skip_left(); break;
                 case '.': print(); break;
                 case ',': read(); break;
-                default : throw std::invalid_argument("Ill formed program.");
+                default : throw std::invalid_argument("Ill formed program |" + program_m + "|");
                 }
 
                 check_limits();
             }
+        }
+        catch(std::invalid_argument&)
+        {
+            throw;
         }
         catch(time_limit_exceeded&)
         {

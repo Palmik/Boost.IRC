@@ -40,9 +40,16 @@ public:
 
         std::string receiver = message::get_response_receiver(msg);
 
+        boost::regex expr1("([^ ]*) ?.*");
+        std::string program = message::utility::first_match(expr1, content);
+        boost::regex expr2(".* < (.*)");
+        std::string input = message::utility::first_match(expr2, content);
+
+        in_m.str(input);
+
         try
         {
-            interpreter_m.interpret(content, 500000, 2000);
+            interpreter_m.interpret(program, 500000, 3000);
         }
         catch(std::exception& ex)
         {

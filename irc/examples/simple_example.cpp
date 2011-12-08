@@ -49,8 +49,9 @@ int main()
     bot::attach_raw(pong_bot, irc);
     
     // Setup slap_back bot
-    bot::slap_back slap_back_bot;
+    bot::slap_back slap_back_bot(" with a chainsaw.");
     slap_back_bot.protect("Palmik");
+    slap_back_bot.protect("meggie");
     slap_back_bot.protect(nickname);
     bot::attach_raw(slap_back_bot, irc);
 

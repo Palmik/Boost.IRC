@@ -15,6 +15,10 @@ namespace irc { namespace bot
 class slap_back
 {
 public:
+    slap_back(std::string const& appendix) :
+        appendix_m(appendix)
+    {}
+    
     void process(std::string const& msg);
     boost::signals2::signal<void (std::string)>& sig_responded() { return sig_responded_m; }
     
@@ -25,6 +29,7 @@ private:
     boost::signals2::signal<void (std::string)> sig_responded_m;
     
     std::set<std::string> protected_nicknames_m;
+    std::string appendix_m;
 };
 
 void slap_back::process(std::string const& msg)
@@ -41,7 +46,7 @@ void slap_back::process(std::string const& msg)
         is_protected(receiver) &&
         !is_protected(sender))
     {
-        sig_responded()(message::make_action(channel, "slaps " + sender) +
+        sig_responded()(message::make_action(channel, "slaps " + sender + appendix_m) +
                         message::make_notice(sender, "Stay the fuck away from " + receiver));
     }
 }
