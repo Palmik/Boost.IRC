@@ -1,4 +1,4 @@
-alias used-libs : /irc /irc/bots ;
+alias used-libs : /irc /irc/addons ;
 
 all-tests = [ glob ../*.cpp ] ;
 for local test in $(all-tests)

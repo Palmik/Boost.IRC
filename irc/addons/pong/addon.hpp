@@ -6,7 +6,7 @@
 
 #include <irc/message.hpp>
 
-namespace irc { namespace bot
+namespace irc { namespace addon
 {
 
 class pong

@@ -36,9 +36,9 @@ private:
     void handle_read(boost::system::error_code const& error,
                      std::size_t bytes_transferred);
 
-    // SIGNAL HANDLERS
     void on_connect();
-    
+
+
     std::string hostname_m;    // e.g. irc.freenode.net
     std::string servicename_m; // e.g. 6667
 
@@ -96,22 +96,15 @@ inline void connection::do_connect()
     }
     catch (boost::system::system_error& error)
     {
-        error_code = error.code();
+        sig_error()(error.code());
+        return;
     }
-
-    if (error_code)
-    {
-        sig_error()(error_code);        
-    }
-    else
-    {
-        sig_connected()();
-    }
+    
+    sig_connected()();
 }
 
 inline void connection::do_send(std::string const& msg)
 {
-    boost::system::error_code error_code;
     try
     {
         boost::asio::write(socket_m,
@@ -120,12 +113,8 @@ inline void connection::do_send(std::string const& msg)
     }
     catch (boost::system::system_error& error)
     {
-        error_code = error.code();
-    }
-
-    if (error_code)
-    {
-        sig_error()(error_code);
+        sig_error()(error.code());
+        return;
     }
 }
 
@@ -139,12 +128,7 @@ inline void connection::do_read()
     }
     catch (boost::system::system_error& error)
     {
-        error_code = error.code();
-    }
-
-    if (error_code)
-    {
-        sig_error()(error_code);
+        sig_error()(error.code());
     }
 }
 

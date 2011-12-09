@@ -2,10 +2,10 @@
 #include <irc/message.hpp>
 #include <irc/encoder.hpp>
 
-#include <irc/bots/pong.hpp>
-#include <irc/bots/slap_back.hpp>
-#include <irc/bots/brainfuck.hpp>
-#include <irc/bots/utility.hpp>
+#include <irc/addons/pong/addon.hpp>
+#include <irc/addons/slap_back/addon.hpp>
+#include <irc/addons/brainfuck/addon.hpp>
+#include <irc/addons/utility.hpp>
 
 #include <iostream>
 
@@ -14,8 +14,8 @@ using namespace irc;
 static const std::string servername = "irc.rizon.net";
 static const std::string port = "6667";
 
-static const std::string nickname = "BoostBot";
-static const std::string channel = "#soulwell";
+static const std::string nickname = "sad_bot";
+static const std::string channel = "#bots";
 
 void on_connected(connection& irc)
 {
@@ -45,19 +45,19 @@ int main()
     encoder enc("utf8", "utf8", "utf8");
     
     // Setup pong bot
-    bot::pong pong_bot;
-    bot::attach_raw(pong_bot, irc);
+    addon::pong pong_bot;
+    addon::attach_raw(pong_bot, irc);
     
     // Setup slap_back bot
-    bot::slap_back slap_back_bot(" with a chainsaw.");
+    addon::slap_back slap_back_bot(" around a bit with a chainsaw.");
     slap_back_bot.protect("Palmik");
-    slap_back_bot.protect("meggie");
     slap_back_bot.protect(nickname);
-    bot::attach_raw(slap_back_bot, irc);
+    addon::attach_raw(slap_back_bot, irc);
 
     // Setup brainfuck bot
-    bot::brainfuck brainfuck_bot(">>");
-    bot::attach_raw(brainfuck_bot, irc);
+    addon::brainfuck brainfuck_bot("@brainfuck");
+    brainfuck_bot.ignore(nickname);
+    addon::attach_raw(brainfuck_bot, irc);
     
     // Connect
     irc.connect();

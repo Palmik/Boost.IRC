@@ -1,7 +1,7 @@
 #ifndef IRC_BOTS_UTILITY_HPP
 #define IRC_BOTS_UTILITY_HPP
 
-namespace irc { namespace bot
+namespace irc { namespace addon
 {
 
 template <typename B, typename C>

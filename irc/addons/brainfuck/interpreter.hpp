@@ -107,7 +107,7 @@ private:
     std::size_t program_pointer_m;
     std::size_t memory_pointer_m;
 
-    std::vector<unsigned char> memory_m;
+    std::vector<char> memory_m;
 
     boost::timer::cpu_timer timer_m;
 };
@@ -124,7 +124,7 @@ void interpreter::dec_pointer()
 {
     if (memory_pointer_m == 0)
     {
-        std::runtime_error("Undefined behaviour detected.");
+        throw std::runtime_error("Undefined behaviour detected.");
     }
     --memory_pointer_m;
 }
@@ -144,10 +144,13 @@ void interpreter::skip_right()
     if (memory_m.at(pointer()) != 0) {
         return;
     }
+    std::size_t count = 1;
 
     char next = program_m.at(++program_pointer_m);
-    while (next != ']')
+    while (count)
     {
+        if (next == '[') ++count;
+        if (next == ']') --count;
         next = program_m.at(++program_pointer_m);
     }
 }
@@ -156,23 +159,26 @@ void interpreter::skip_left()
 {
     if (memory_m.at(pointer()) == 0) {
         return;
-    }
-
+    }    
+    std::size_t count = 1;
+    
     char next = program_m.at(--program_pointer_m);
-    while (next != '[')
+    while (count)
     {
+        if (next == '[') --count;
+        if (next == ']') ++count;
         next = program_m.at(--program_pointer_m);
     }
 }
 
 void interpreter::print()
 {
-    out_m << ((char)memory_m.at(pointer()));
+    out_m.put(memory_m.at(pointer()));
 }
 
 void interpreter::read()
 {
-    in_m >> (memory_m.at(pointer()));
+    in_m.get(memory_m.at(pointer()));
 }
 
 void interpreter::reset(std::string program, std::size_t max_memory, std::size_t max_miliseconds)
