@@ -4,7 +4,7 @@
 #include <boost/signals2/signal.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
-#include <irc/message.hpp>
+#include <irc/message/message.hpp>
 
 namespace irc { namespace addon
 {

@@ -1,9 +1,12 @@
 lib boost_regex ;
 lib boost_timer ;
+lib boost_system ;
+lib boost_filesystem ;
+lib boost_thread ;
 
 alias irc/addons
     :
-    : <include>/irc <include>boost_regex <include>boost_timer
+    : <include>/irc <include>boost_regex <include>boost_timer <include>boost_system <include>boost_filesystem <include>boost_thread
     :
-    : <include>/irc <include>boost_regex <include>boost_timer
+    : <include>/irc <include>boost_regex <include>boost_timer <include>boost_system <include>boost_filesystem <include>boost_thread
     ; 

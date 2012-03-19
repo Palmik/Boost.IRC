@@ -1,5 +1,5 @@
 project boost-irc
-    : requirements <include>.
+    : requirements <include>. <c++-template-depth>256
     : usage-requirements <include>.
     ;
 

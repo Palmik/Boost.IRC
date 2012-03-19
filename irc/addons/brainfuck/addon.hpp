@@ -10,7 +10,7 @@
 #include <boost/algorithm/string/case_conv.hpp>
 #include <boost/algorithm/string/trim.hpp>
 
-#include <irc/message.hpp>
+#include <irc/message/message.hpp>
 
 #include <irc/addons/brainfuck/interpreter.hpp>
 
@@ -25,7 +25,6 @@ public:
         in_m(""),
         out_m(""),
         interpreter_m(in_m, out_m)
-        
     {}
 
     void ignore(std::string const& nickname)

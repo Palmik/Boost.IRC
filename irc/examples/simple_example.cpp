@@ -1,10 +1,10 @@
 #include <irc/connection.hpp>
-#include <irc/message.hpp>
-#include <irc/encoder.hpp>
+#include <irc/message/message.hpp>
 
 #include <irc/addons/pong/addon.hpp>
 #include <irc/addons/slap_back/addon.hpp>
 #include <irc/addons/brainfuck/addon.hpp>
+#include <irc/addons/weather/addon.hpp>
 #include <irc/addons/utility.hpp>
 
 #include <iostream>
@@ -14,7 +14,7 @@ using namespace irc;
 static const std::string servername = "irc.rizon.net";
 static const std::string port = "6667";
 
-static const std::string nickname = "sad_bot";
+static const std::string nickname = "palmbot";
 static const std::string channel = "#bots";
 
 void on_connected(connection& irc)
@@ -40,9 +40,6 @@ int main()
     irc.sig_connected().connect(boost::bind(on_connected, boost::ref(irc)));
     irc.sig_error().connect(on_error);
     irc.sig_received().connect(boost::bind(on_received, boost::ref(irc), _1));
-
-    // Setup encoder
-    encoder enc("utf8", "utf8", "utf8");
     
     // Setup pong bot
     addon::pong pong_bot;
@@ -58,6 +55,10 @@ int main()
     addon::brainfuck brainfuck_bot("@brainfuck");
     brainfuck_bot.ignore(nickname);
     addon::attach_raw(brainfuck_bot, irc);
+
+    // Setup weather bot
+    addon::weather weather_bot("@weather", "en");
+    addon::attach_raw(weather_bot, irc);
     
     // Connect
     irc.connect();
